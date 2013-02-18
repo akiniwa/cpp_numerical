@@ -1,4 +1,8 @@
+#ifdef __APPLE__
 #include <GLUT/glut.h>
+#elif __linux
+#include <GL/glut.h>
+#endif
 
 int width = 1000, height = 1000;
 
