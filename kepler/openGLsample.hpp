@@ -52,14 +52,13 @@ void FreeFall(void){
 		glTranslatef( xi[i-1]*1.6, yi[i-1],0.0f);
 		glutSolidSphere(0.1,30,30);
 		glPopMatrix();
-
 		glDisable(GL_DEPTH_TEST);
 }
 
 void display(void){
 		glClearColor( .0, .0, .0, .0);
 		glClear( GL_COLOR_BUFFER_BIT );
-		//glRotated(0.3, 0.8, 1.0, 0.6);
+		glRotated(0.3, 0.8, 1.0, 0.6);
 		FreeFall();
 		glutSwapBuffers();
 
