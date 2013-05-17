@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-double probability(double u, double m, double beta, double s);
+double probability(double m, double beta, double s);
 
 int main()
 {
@@ -10,8 +10,8 @@ int main()
 	double s = 3;
 
 	char *data_file;
-	file *fp = popen("gnuplot -persist", "w");
-	if (fp == null) {
+	FILE *fp = popen("gnuplot -persist", "w");
+	if (fp == NULL) {
 		return -1;
 	}
 
@@ -34,7 +34,7 @@ double probability(double m, double beta, double s)
 {
 	double f;
 
-	f = (1/(beta*s*sqrt(2*m_pi)))*exp((pow(-log(beta/m),2))/(2*pow(s, 2)));
+	f = (1/(beta*s*sqrt(2*M_PI)))*exp((pow(-log(beta/m),2))/(2*pow(s, 2)));
 
 	return f;
 }
