@@ -100,7 +100,7 @@ void FreeFall(void){
 void display(void){
 		glClearColor( .0, .0, .0, .0);
 		glClear( GL_COLOR_BUFFER_BIT );
-		glRotated(0.3, 0.8, 1.0, 0.6);
+//		glRotated(0.3, 0.8, 1.0, 0.6);
 		FreeFall();
 		glutSwapBuffers();
 
@@ -143,16 +143,16 @@ void openGL(){
 		gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
 		glTranslated(0.0, 0.0, -0.6);
 */
-
         gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
 //		glOrtho(-2.0, 2.0, -2.0, 2.0, -8.0, 8.0);
-		glTranslated(0.0, 0.0, -8.0);
+		glTranslated(-5.0, 0.0, -30.0);
 
 //		gluOrtho2D( -1.7, 1.7, -1.7, 1.7 );
 		//glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, green);
+
 
 		glutMainLoop();
 }

@@ -15,7 +15,8 @@ int main( void )
   int s = socket( AF_LOCAL, SOCK_DGRAM, 0 );
 
   // 接続の目印の指定
-  sockaddr_un addr = SOCKADDR_UN_INIT( AF_LOCAL, SOCKNAME );
+//  sockaddr_un addr = SOCKADDR_UN_INIT( AF_LOCAL, SOCKNAME );
+	sockaddr_un addr = SOCKADDR_UN_INIT( AF_LOCAL, "tmp/udsock" );
 
   // 古い目印の削除(もし残っていると厄介)
   unlink( SOCKNAME );
