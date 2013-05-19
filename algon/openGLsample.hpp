@@ -49,24 +49,12 @@ void FreeFall(void){
 		glLightfv(GL_LIGHT0, GL_POSITION, light0pos);
 		glLightfv(GL_LIGHT1, GL_POSITION, light1pos);
 
-        /*
-		glPushMatrix();
-		glMaterialfv(GL_FRONT, GL_AMBIENT, ms_ruby.ambient);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, ms_ruby.diffuse);
-		glMaterialfv(GL_FRONT, GL_SPECULAR, ms_ruby.specular);
-		glMaterialfv(GL_FRONT, GL_SHININESS, &ms_ruby.shininess);
-		glTranslatef(0.0, 0.0, 0.0);
-		glutSolidSphere( 0.3,30,30);
-		glPopMatrix();
-        */
-
 		/* axis */
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
 		glBegin( GL_LINES );
 		glVertex3d(-1, 0, 0);
 		glVertex3d(1, 0, 0);
 		glEnd();
-
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
 		glBegin( GL_LINE_STRIP );
 		for(j=0 ; j<i ; j++) {
@@ -85,13 +73,13 @@ void FreeFall(void){
 
 		glBegin( GL_LINE_STRIP );
 		for(j=0 ; j<i ; j++) {
-			glVertex3f( xi[j]*1.6, yi[j], 0.0f);
+			glVertex3f( xi[j], yi[j], 0.0f);
 		}
 		glEnd();
 
 		glPushMatrix();
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
-		glTranslatef( xi[i-1]*1.6, yi[i-1],0.0f);
+		glTranslatef( xi[i-1], yi[i-1], 0.0f);
 		glutSolidSphere(0.1,30,30);
 		glPopMatrix();
 		glDisable(GL_DEPTH_TEST);
@@ -103,7 +91,6 @@ void display(void){
 //		glRotated(0.3, 0.8, 1.0, 0.6);
 		FreeFall();
 		glutSwapBuffers();
-
 }
 
 void timer(int value) {
@@ -145,14 +132,13 @@ void openGL(){
 */
         gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
 //		glOrtho(-2.0, 2.0, -2.0, 2.0, -8.0, 8.0);
-		glTranslated(-5.0, 0.0, -30.0);
+		glTranslated(-1.0, 0.0, -6.0);
 
 //		gluOrtho2D( -1.7, 1.7, -1.7, 1.7 );
 		//glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, green);
-
 
 		glutMainLoop();
 }

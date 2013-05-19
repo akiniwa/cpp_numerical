@@ -4,10 +4,13 @@
 #include <GL/glut.h>
 #endif
 
+#include <stdlib.h>
+
 int width = 1000, height = 1000;
 
 float yi[3000];  /* 軌跡データ格納用 */
 float xi[3000];
+float zi[3000];
 int i=0, j=0;
 FILE *fp3;
 
@@ -45,14 +48,6 @@ GLfloat shininess = 30.0;//光沢の強さ
 void FreeFall(void){
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-		//glEnable(GL_DEPTH_TEST);
-
-        /*
-		glLightfv(GL_LIGHT0, GL_POSITION, light0pos);
-		glLightfv(GL_LIGHT1, GL_POSITION, light1pos);
-		glLightfv(GL_LIGHT2, GL_POSITION, light2pos);
-		glLightfv(GL_LIGHT3, GL_POSITION, light3pos);
-        */
 
 		glPushMatrix();
 		glMaterialfv(GL_FRONT, GL_AMBIENT, ms_ruby.ambient);
@@ -64,40 +59,49 @@ void FreeFall(void){
 		glutSolidSphere(0.3,30,30);
 		glPopMatrix();
 
-		/* axis */
+		/* X-axis */
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
 		glBegin( GL_LINES );
-		glVertex3d(-1, 0, 0);
-		glVertex3d(1, 0, 0);
+        glColor3d(1, 0, 0);
+		glVertex3d(-10, 0, 0);
+		glVertex3d(10, 0, 0);
 		glEnd();
 
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
-		glBegin( GL_LINE_STRIP );
-        glColor3d(0.2, 0.7, 0.2);
-		for(j=0 ; j<i ; j++) {
-			glVertex3f( xi[j], yi[j], 0);
-		}
+		/* Y-axis */
+		glBegin( GL_LINES );
+        glColor3d(0, 1, 0);
+		glVertex3d(0, -10, 0);
+		glVertex3d(0, 10, 0);
 		glEnd();
 
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
-		glPointSize(4.);
-		glBegin( GL_POINTS );
-		for (j=0;j<i;j+=40) {
-			glVertex3f( xi[j], yi[j], 0);
-		}
-			glVertex3f( xi[i-1], yi[i-1], 0);
+		/* Z-axis */
+		glBegin( GL_LINES );
+        glColor3d(0, 0, 1);
+		glVertex3d(0, 0, -10);
+		glVertex3d(0, 0, 10);
+		glEnd();
+
+        /* sekido */
+		glBegin( GL_QUADS );
+        glColor4f(0.6, 0.2, 0.2, 0.4);
+        glVertex3d(-5, -5, 0);
+		glVertex3d(-5, 5, 0);
+		glVertex3d(5, 5, 0);
+		glVertex3d(5, -5, 0);
 		glEnd();
 
 		glBegin( GL_LINE_STRIP );
         glColor3d(0.7, 0.1, 0.2);
 		for(j=0 ; j<i ; j++) {
-			glVertex3f( xi[j]*1.6, yi[j], 0.0f);
+			//glVertex3f( xi[j], yi[j], zi[j]);
+			glVertex3f( xi[j], yi[j], zi[j]);
 		}
 		glEnd();
 
 		glPushMatrix();
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
-		glTranslatef( xi[i-1]*1.6, yi[i-1],0.0f);
+		//glTranslatef( xi[i-1], yi[i-1], zi[i-1] );
+		glTranslatef( xi[i-1], yi[i-1], zi[i-1] );
         glColor3d(0.7, 0.1, 0.2);
 		glutSolidSphere(0.1,30,30);
 		glPopMatrix();
@@ -107,9 +111,56 @@ void FreeFall(void){
 void display(void){
 		glClearColor( .0, .0, .0, .0);
 		glClear( GL_COLOR_BUFFER_BIT );
-		glRotated(0.3, 0.8, 1.0, 0.6);
+//		glRotated(0.3, 0.8, 1.0, 0.6);
+	//	glRotated(0.5, 0.1, 1.0, 0.1);
 		FreeFall();
 		glutSwapBuffers();
+}
+
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+        case 'x':
+            glRotated(5, 1.0, 0.0, 0.0);
+            break;
+        case 'X':
+            glRotated(5, -1.0, 0.0, 0.0);
+            break;
+        case 'y':
+            glRotated(5, 0.0, 1.0, 0.0);
+            break;
+        case 'Y':
+            glRotated(5, 0.0, -1.0, 0.0);
+            break;
+        case 'z':
+            glRotated(5, 0.0, 0.0, 1.0);
+            break;
+        case 'Z':
+            glRotated(5, 0.0, 0.0, -1.0);
+            break;
+        case 'h':
+            glTranslated(1.0, 0, 0);
+            break;
+        case 'j':
+            glTranslated(0, -1.0, 0);
+            break;
+        case 'k':
+            glTranslated(0, 1.0, 0);
+            break;
+        case 'l':
+            glTranslated(-1.0, 0, 0);
+            break;
+        case 'q':
+        case 'Q':
+        case '\033':
+            printf("%c %d\n", key, key);
+            exit(0);
+            break;
+        default:
+            printf("%f\n", sin(30));
+            printf("%f\n", M_PI);
+            printf("%f\n", sin(M_PI));
+            break;
+    }
 }
 
 void timer(int value) {
@@ -124,10 +175,16 @@ void openGL(){
 			exit(0);
 		}
 
-		char data[50];
+		char data[100];
 		int l = 0;
-		while (fgets(data, 50, fp3)) {
+        /*
+		while (fgets(data, 100, fp3)) {
 			sscanf(data, "%f%f",&xi[l], &yi[l]);
+			l++;
+		}
+        */
+		while (fgets(data, 100, fp3)) {
+			sscanf(data, "%f%f%f",&xi[l], &yi[l], &zi[l]);
 			l++;
 		}
 
@@ -144,15 +201,18 @@ void openGL(){
 		/* 2D-setup */
 		glMatrixMode( GL_PROJECTION );
 		glLoadIdentity();
+
 		/*  
 		gluLookAt(0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
 		glTranslated(0.0, 0.0, -0.6);
-*/
-        gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
+        */
+
+        gluPerspective(30.0, 1, 1, 50.0);
+        //gluPerspective(30.0, (double)width / (double)height, 1.0, 5.0);
 //		glOrtho(-2.0, 2.0, -2.0, 2.0, -8.0, 8.0);
 		//glTranslated(0.0, 0.0, -10.0);
-		glTranslated(0, 0, -7.0);
+		glTranslated(0, 0, -30.0);
 
 //		gluOrtho2D( -1.7, 1.7, -1.7, 1.7 );
 		glEnable(GL_LIGHTING);
@@ -161,12 +221,14 @@ void openGL(){
 		glEnable(GL_LIGHT1);
 		glEnable(GL_LIGHT2);
 		glEnable(GL_LIGHT3);
-
-//		glRotated(0.3, 0.8, 1.0, 0.6);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//		glRotated(70, 0, 1.0, 0);
 
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, green);
 		glLightfv(GL_LIGHT2, GL_DIFFUSE, green);
 		glLightfv(GL_LIGHT3, GL_DIFFUSE, green);
+        glutKeyboardFunc(keyboard);
 
 		glutMainLoop();
 }
