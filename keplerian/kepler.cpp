@@ -36,12 +36,13 @@ int main(int argc, char *argv[])
 
     Satellite* debris;
     debris = new Satellite();
+//    debris->COEs(M_PI*0.2, M_PI*0.1, M_PI*.025);
+    debris->COEs(0.0, 0.0, 0.0);
 
     double T;
     for( T=0.0 ; T<10.00 ; T += debris->dT ){
         debris->motion();
-//        debris->COEs(M_PI*0.2, M_PI*0.1, M_PI*.025);
-        debris->COEs(M_PI*0.5, M_PI*0.5, 0);
+//        debris->COEs(M_PI*0.5, M_PI*0.5, 0);
         fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X), debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
    }
    fclose(fp);
