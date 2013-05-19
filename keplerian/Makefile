@@ -1,5 +1,8 @@
 satellite: main.o libsatellite.so
 	g++ -o satellite kepler.o -framework GLUT -framework OpenGL -L. -lsatellite
+	rm kepler.o
+	rm satellite.o
+	rm particle.o
 	./satellite file
 main.o: kepler.cpp
 	g++ -c kepler.cpp

@@ -21,7 +21,6 @@
 #include <math.h>
 #include "openGLsample.hpp"
 #include "satellite.hpp"
-
 //---- main function
 int main(int argc, char *argv[])
 {
@@ -41,9 +40,10 @@ int main(int argc, char *argv[])
     double T;
     for( T=0.0 ; T<10.00 ; T += debris->dT ){
         debris->motion();
-        fprintf(fp, "%f %f %f\n", debris->qx, debris->qy, debris->qz);
+//        debris->COEs(M_PI*0.2, M_PI*0.1, M_PI*.025);
+        debris->COEs(M_PI*0.5, M_PI*0.5, 0);
+        fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X), debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
    }
-
    fclose(fp);
    glutInit(&argc, argv);
    openGL();
