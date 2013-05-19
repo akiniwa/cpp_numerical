@@ -152,13 +152,9 @@ void keyboard(unsigned char key, int x, int y) {
         case 'q':
         case 'Q':
         case '\033':
-            printf("%c %d\n", key, key);
             exit(0);
             break;
         default:
-            printf("%f\n", sin(30));
-            printf("%f\n", M_PI);
-            printf("%f\n", sin(M_PI));
             break;
     }
 }
