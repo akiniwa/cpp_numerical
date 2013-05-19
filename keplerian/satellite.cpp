@@ -1,6 +1,6 @@
 #include "satellite.hpp"
 
-const double Satellite::GM = 4*M_PI*M_PI*10;
+const double Satellite::GM = 4*M_PI*M_PI*1000000;
 const double Satellite::M = 1.0;
 
 Satellite::Satellite() {
@@ -12,7 +12,7 @@ Satellite::Satellite() {
     py = sqrt(GM)*M;
     pz = 0;
 
-    dT = 0.005;
+    dT = 0.00001;
 }
 
 double Satellite::RungeKuttaDQ(double lp) {

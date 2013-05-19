@@ -8,9 +8,9 @@
 
 int width = 1000, height = 1000;
 
-float yi[3000];  /* 軌跡データ格納用 */
-float xi[3000];
-float zi[3000];
+float yi[1000002];  /* 軌跡データ格納用 */
+float xi[1000002];
+float zi[1000002];
 int i=0, j=0;
 FILE *fp3;
 
@@ -46,7 +46,6 @@ GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };//白色
 GLfloat shininess = 30.0;//光沢の強さ
 
 void FreeFall(void){
-		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 		glPushMatrix();
@@ -105,7 +104,7 @@ void FreeFall(void){
         glColor3d(0.7, 0.1, 0.2);
 		glutSolidSphere(0.1,30,30);
 		glPopMatrix();
-//_glDisable(GL_DEPTH_TEST);
+        //_glDisable(GL_DEPTH_TEST);
 }
 
 void display(void){
@@ -173,15 +172,10 @@ void openGL(){
 
 		char data[100];
 		int l = 0;
-        /*
-		while (fgets(data, 100, fp3)) {
-			sscanf(data, "%f%f",&xi[l], &yi[l]);
-			l++;
-		}
-        */
-		while (fgets(data, 100, fp3)) {
-			sscanf(data, "%f%f%f",&xi[l], &yi[l], &zi[l]);
-			l++;
+
+        while (fgets(data, 100, fp3)) {
+            sscanf(data, "%f%f%f",&xi[l], &yi[l], &zi[l]);
+            l++;
 		}
 
 		/* init gult */
