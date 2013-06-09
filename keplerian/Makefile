@@ -3,7 +3,7 @@ satellite: main.o libsatellite.so
 	rm kepler.o
 	rm satellite.o
 	rm particle.o
-	./satellite file
+	./satellite file rule
 main.o: kepler.cpp
 	g++ -c kepler.cpp
 libsatellite.so: satellite.o particle.o

@@ -2,7 +2,6 @@
 
 class Satellite : public Particle {
    private:
-        static const double GM;
         static const double M;
         double RungeKuttaDQ(double);
         double RungeKuttaDP(double);
@@ -10,7 +9,10 @@ class Satellite : public Particle {
         double omega;
         double inclination;
         double omegaSmall;
+        double theta;
     public:
+        static const double GM;
+        static const double totalE;
         Satellite();
         void COEs(double, double, double);
         double getCoordinate(int);
