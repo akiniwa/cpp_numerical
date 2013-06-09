@@ -41,27 +41,13 @@ int main(int argc, char *argv[])
 
     Satellite* debris;
     debris = new Satellite();
-<<<<<<< HEAD
-    debris->COEs(M_PI*0.2, M_PI*0.1, M_PI*.025);
-//    debris->COEs(0.0, 0.0, 0.0);
-=======
     debris->COEs(M_PI*0.4,M_PI*0.3, M_PI*.025);
-//  debris->COEs(0.0, 0.0, 0.0);
->>>>>>> origin/master
+    //  debris->COEs(0.0, 0.0, 0.0);
 
     bool rotate = true;
     double T;
     for( T=0.0 ; T<10.00 ; T += debris->dT ){
         debris->motion();
-<<<<<<< HEAD
-//      debris->COEs(M_PI*0.5, M_PI*0.5, 0);
-        fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X), debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
-   }
-   fclose(fp);
-   glutInit(&argc, argv);
-   openGL();
-=======
-
         double r = hypot(hypot(debris->qx, debris->qy), debris->qz);
         double p = hypot(hypot(debris->px, debris->py), debris->pz);
         //printf("%f\n", 0.5*pow(p, 2) - debris->GM/r);
@@ -81,5 +67,4 @@ int main(int argc, char *argv[])
     fclose(fp);
     glutInit(&argc, argv);
     openGL();
->>>>>>> origin/master
 }
