@@ -25,6 +25,7 @@
 int main(int argc, char *argv[])
 {
     FILE *fp;
+    FILE *fp2;
     if (argc <= 1) {
         printf("not enough argument\n");
         exit(0);
@@ -33,19 +34,38 @@ int main(int argc, char *argv[])
         printf("file cannot open\n");
         exit(0);
     }
+    if ((fp2 = fopen(argv[2], "w")) == NULL) {
+        printf("file cannot open\n");
+        exit(0);
+    }
 
     Satellite* debris;
     debris = new Satellite();
-//    debris->COEs(M_PI*0.2, M_PI*0.1, M_PI*.025);
-    debris->COEs(0.0, 0.0, 0.0);
+    debris->COEs(M_PI*0.4,M_PI*0.3, M_PI*.025);
+//  debris->COEs(0.0, 0.0, 0.0);
 
+    bool rotate = true;
     double T;
     for( T=0.0 ; T<10.00 ; T += debris->dT ){
         debris->motion();
-//        debris->COEs(M_PI*0.5, M_PI*0.5, 0);
-        fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X), debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
-   }
-   fclose(fp);
-   glutInit(&argc, argv);
-   openGL();
+
+        double r = hypot(hypot(debris->qx, debris->qy), debris->qz);
+        double p = hypot(hypot(debris->px, debris->py), debris->pz);
+        //printf("%f\n", 0.5*pow(p, 2) - debris->GM/r);
+        double q = hypot(debris->qz , debris->qx);
+        double theta = atan2(debris->qy, q) * 180.0 / M_PI;
+        fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X),debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
+        //fprintf(fp, "%f %f %f\n", theta+rotate*180.0, p, 0.0);
+        //if (abs(theta) > 89.0) {
+         //   rotate = !rotate;
+        //}
+        if (rotate==true) {
+            fprintf(fp2, "%f %f %f\n", theta, p, 0.0);
+        } else {
+            fprintf(fp2, "%f %f %f\n", 180-theta, p, 0.0);
+        }
+     }
+    fclose(fp);
+    glutInit(&argc, argv);
+    openGL();
 }

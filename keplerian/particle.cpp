@@ -40,4 +40,6 @@ void Particle::motion() {
     px += (pxk[0] +  2*pxk[1] + 2*pxk[2] + pxk[3])*(1.0/6);
     py += (pyk[0] +  2*pyk[1] + 2*pyk[2] + pyk[3])*(1.0/6);
     pz += (pzk[0] +  2*pzk[1] + 2*pzk[2] + pzk[3])*(1.0/6);
+
+
 }
