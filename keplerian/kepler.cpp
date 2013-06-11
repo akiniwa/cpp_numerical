@@ -42,12 +42,10 @@ int main(int argc, char *argv[])
     Satellite* debris;
     debris = new Satellite();
     debris->COEs(M_PI*0.4,M_PI*0.3, M_PI*.025);
-
     bool rotate = true;
 
     for(int t=0; t<1000000; t++){
         debris->motion();
-
         double r = hypot(hypot(debris->qx, debris->qy), debris->qz);
         double p = hypot(hypot(debris->px, debris->py), debris->pz);
 
@@ -56,12 +54,6 @@ int main(int argc, char *argv[])
 
         if (t%50==0) {
             fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X),debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
-
-            //fprintf(fp, "%f %f %f\n", theta+rotate*180.0, p, 0.0);
-            //if (abs(theta) > 89.0) {
-            //   rotate = !rotate;
-            //}
-
             if (rotate==true) {
                 fprintf(fp2, "%f %f %f\n", theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r);
             } else {

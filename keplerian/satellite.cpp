@@ -1,7 +1,7 @@
 #include "satellite.hpp"
 
 const double Satellite::GM = 4*M_PI*M_PI;
-const double Satellite::M = Satellite::GM;
+const double Satellite::M = 4*M_PI;
 const double Satellite::totalE = 1.0;
 
 Satellite::Satellite() {
@@ -10,7 +10,7 @@ Satellite::Satellite() {
     qz = 0.0;
 
     px = 0.0;
-    py = 14*sqrt(2*GM);
+    py = sqrt(2*GM);
     pz = 0.0;
 
     dT = 0.00001;
@@ -30,7 +30,11 @@ double Satellite::RungeKuttaDP(double lq) {
 
     theta += 0.01;
     //double momemtum = -GM*M*lq*qi3*dT + 0.1*sin(theta);
+<<<<<<< HEAD
     double momemtum = -GM*M*lq*qi3*dT;
+=======
+    double momemtum = -GM*lq*qi3*dT;
+>>>>>>> origin/master
     return momemtum;
 }
 

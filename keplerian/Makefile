@@ -4,6 +4,7 @@ satellite: main.o libsatellite.so
 	rm satellite.o
 	rm particle.o
 	./satellite file rule
+	R --vanilla --slave < rot.R
 main.o: kepler.cpp
 	g++ -c kepler.cpp
 libsatellite.so: satellite.o particle.o
