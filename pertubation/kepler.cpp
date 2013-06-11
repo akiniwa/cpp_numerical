@@ -52,12 +52,20 @@ int main(int argc, char *argv[])
         double q = hypot(debris->qz , debris->qx);
         double theta = atan2(debris->qy, q) * 180.0 / M_PI;
 
-        if (t%20==0) {
-            fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X),debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
+        if (t%500==0) {
+            fprintf(fp, "%f %f %f %f\n", debris->getCoordinate(Satellite::X),debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z), debris->qx/r);
+
+            //fprintf(fp, "%f %f %f\n", theta+rotate*180.0, p, 0.0);
+            //if (abs(theta) > 89.0) {
+            //   rotate = !rotate;
+            //}
+
             if (rotate==true) {
-                fprintf(fp2, "%f %f %f\n", theta, p, 0.5*pow(p, 2) - debris->GM/r);
+                fprintf(fp2, "%f %f %f %f\n", theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r);
+//                fprintf(fp2, "%f %f %f %f\n", theta, p, 0.5*pow(p, 2)+ 0.5*pow(r, 2));
             } else {
-                fprintf(fp2, "%f %f %f\n", 180-theta, p, 0.5*pow(p, 2) - debris->GM/r);
+                fprintf(fp2, "%f %f %f %f\n", 180-theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r);
+//                fprintf(fp2, "%f %f %f %f\n", 180-theta, p, 0.5*pow(p, 2)+ 0.5*pow(r, 2));
             }
         }
     }

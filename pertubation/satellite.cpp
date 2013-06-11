@@ -3,35 +3,41 @@
 const double Satellite::GM = 4*M_PI*M_PI;
 const double Satellite::M = 4*M_PI;
 const double Satellite::totalE = 1.0;
+const double Satellite::J2 = 1082.264E-6;
+const double Satellite::eq_radius = 63;
 
 Satellite::Satellite() {
-    qx = 1.8;
+    qx = 1.2;
     qy = 0.0;
     qz = 0.0;
 
     px = 0.0;
-    py = sqrt(2*GM);
+//    py = 0.0;
+    py = 1.3*sqrt(2*GM);
     pz = 0.0;
 
-    dT = 0.0001;
-    theta = 0.0;
+    //dT = 0.00001;
+    dT = 0.00001;
 }
 
 double Satellite::RungeKuttaDQ(double lp) {
     double coordinate = lp/M*dT;
+    //double coordinate = lp*dT;
     return coordinate;
 }
 
 double Satellite::RungeKuttaDP(double lq) {
-    double q, qi3;
+    double q, qi3, qi4;
 
     q   = hypot(hypot( qx, qy ), qz);
     qi3 = 1.0/(q*q*q);
+    qi4 = qi3 / q;
 
-    theta += 0.01;
-    //double momemtum = -GM*M*lq*qi3*dT + 0.1*sin(theta);
+    double theta = atan2(qy, hypot(qx, qz));
+   // double momemtum = (-GM*lq*qi3 + 3*GM*q*q*qi4*J2*(1.5*pow(qz/q, 2)-0.5))*dT;
     double momemtum = -GM*lq*qi3*dT;
     return momemtum;
+//    return -lq*dT;
 }
 
 double Satellite::rotate(int axis) {
