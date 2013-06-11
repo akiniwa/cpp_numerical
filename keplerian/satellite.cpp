@@ -13,7 +13,7 @@ Satellite::Satellite() {
     py = 14*sqrt(2*GM);
     pz = 0.0;
 
-    dT = 0.0001;
+    dT = 0.00001;
     theta = 0.0;
 }
 
@@ -29,8 +29,8 @@ double Satellite::RungeKuttaDP(double lq) {
     qi3 = 1.0/(q*q*q);
 
     theta += 0.01;
-    double momemtum = -GM*M*lq*qi3*dT + 0.1*sin(theta);
-    //double momemtum = -GM*M*lq*qi3*dT;
+    //double momemtum = -GM*M*lq*qi3*dT + 0.1*sin(theta);
+    double momemtum = -GM*M*lq*qi3*dT;
     return momemtum;
 }
 

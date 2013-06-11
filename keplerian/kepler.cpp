@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
     bool rotate = true;
 
-    for(int t=0; t<100000; t++){
+    for(int t=0; t<1000000; t++){
         debris->motion();
 
         double r = hypot(hypot(debris->qx, debris->qy), debris->qz);
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
         double q = hypot(debris->qz , debris->qx);
         double theta = atan2(debris->qy, q) * 180.0 / M_PI;
 
-        if (t%20==0) {
+        if (t%50==0) {
             fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X),debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
 
             //fprintf(fp, "%f %f %f\n", theta+rotate*180.0, p, 0.0);
@@ -63,9 +63,9 @@ int main(int argc, char *argv[])
             //}
 
             if (rotate==true) {
-                fprintf(fp2, "%f %f %f\n", theta, p, 0.5*pow(p, 2) - debris->GM/r);
+                fprintf(fp2, "%f %f %f\n", theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r);
             } else {
-                fprintf(fp2, "%f %f %f\n", 180-theta, p, 0.5*pow(p, 2) - debris->GM/r);
+                fprintf(fp2, "%f %f %f\n", 180-theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r);
             }
         }
     }
