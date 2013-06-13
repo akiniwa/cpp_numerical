@@ -6,6 +6,20 @@ const double GM = 4*M_PI*M_PI;
 const double M = 4*M_PI;
 const double dT = 0.0001;
 
+const double symp_k[4] = {
+    +0.67560359597982888591,
+    -0.17560359597982888591,
+    -0.17560359597982888591,
+    +0.67560359597982888591
+};
+
+const double symp_u[4] = {
+    +0.00000000000000000000,
+    +1.35120719195965777182,
+    -1.70241438391931554364,
+    +1.35120719195965777182
+};
+
 struct Particle {
     double px, py;
     double qx, qy;

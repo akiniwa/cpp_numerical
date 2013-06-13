@@ -12,7 +12,7 @@ Satellite::Satellite() {
     qz = 0.0;
 
     px = 0.0;
-    py = 2.29*sqrt(2*GM);
+    py = 1.5*sqrt(2*GM);
     pz = 0.0;
 
     accelaration = 0.0;

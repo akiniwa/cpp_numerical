@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     double previous;
     int count = 0;
 
-    for(int t=0; t<100000000; t++){
+    for(int t=0; t<1000000; t++){
         debris->motion();
         double r = hypot(hypot(debris->qx, debris->qy), debris->qz);
         double p = hypot(hypot(debris->px, debris->py), debris->pz);
