@@ -16,7 +16,7 @@ Satellite::Satellite() {
     pz = 0.0;
 
     accelaration = 0.0;
-    dT = 0.0001;
+    dT = 0.001;
 }
 
 double Satellite::RungeKuttaDQ(double lp) {
@@ -31,8 +31,8 @@ double Satellite::RungeKuttaDP(double lq) {
     qi3 = 1.0/(q*q*q);
     qi4 = qi3 / q;
 
-    //accelaration = (-GM*qi3 + 3*GM*q*q*qi4*J2*(1.5*pow(qz/q, 2)-0.5))*lq;
-    accelaration = -GM*lq*qi3;
+    accelaration = (-GM*qi3 + 3*GM*q*q*qi4*J2*30*(1.5*pow(qz/q, 2)-0.5))*lq;
+    //accelaration = -GM*lq*qi3;
     double momemtum = accelaration*dT;
     return momemtum;
 //    return -lq*dT;
