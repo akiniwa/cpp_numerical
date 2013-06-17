@@ -34,8 +34,8 @@ double Satellite::RungeKuttaDP(double lq) {
     qi4 = qi3 / q;
 
     double theta = atan2(qy, hypot(qx, qz));
-   // double momemtum = (-GM*lq*qi3 + 3*GM*q*q*qi4*J2*(1.5*pow(qz/q, 2)-0.5))*dT;
-    double momemtum = -GM*lq*qi3*dT;
+    double momemtum = (-GM*lq*qi3 + 3*GM*q*q*qi4*J2*(1.5*pow(qz/q, 2)-0.5))*dT;
+    //double momemtum = -GM*lq*qi3*dT;
     return momemtum;
 //    return -lq*dT;
 }
