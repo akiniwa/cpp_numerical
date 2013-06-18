@@ -7,12 +7,12 @@ const double Satellite::J2 = 1082.264E-6;
 const double Satellite::eq_radius = 63;
 
 Satellite::Satellite() {
-    qx = 1.2;
+    qx = 1.6;
     qy = 0.0;
     qz = 0.0;
 
     px = 0.0;
-    py = 2.29*sqrt(2*GM);
+    py = 1.2*sqrt(2*GM);
     pz = 0.0;
 
     accelaration = 0.0;
