@@ -82,6 +82,7 @@ void FreeFall(void){
 		glEnd();
 
         /* sekido */
+        /*
 		glBegin( GL_QUADS );
         glColor4f(0.6, 0.2, 0.2, 0.4);
         glVertex3d(-5, -5, 0);
@@ -89,6 +90,7 @@ void FreeFall(void){
 		glVertex3d(5, 5, 0);
 		glVertex3d(5, -5, 0);
 		glEnd();
+        */
 
 		glBegin( GL_LINE_STRIP );
         glColor3d(0.7, 0.1, 0.2);
