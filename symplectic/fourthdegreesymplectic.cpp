@@ -4,8 +4,9 @@
 
 const double GM = 4*M_PI*M_PI;
 const double M = 1;
-const double dT = 0.000001;
+const double dT = 0.0001;
 const int sympI = 3;
+const double J2 = 1082.264E-6;
 
 const double symp[3] = {
     +1.35120719195965777182,
@@ -14,58 +15,60 @@ const double symp[3] = {
 };
 
 struct Particle {
-    double px, py;
-    double qx, qy;
+    double px, py, pz;
+    double qx, qy, qz;
     Particle() {
         px = 0.0;
         py = 0.6*sqrt(2*GM);
         pz = 0.0;
         
-        qx = 1.2;
-        qy = 0.0;
-        qz = 0.0;
+        qx = 1.0;
+        qy = 0.2;
+        qz = 0.3;
     }
 };
 
-double calc(double x, double y) {
-    double r = hypot(x, y);
-    //accelaration = (-GM/(r*r*r) + 3*GM*r*r/(r*r*r)*J2*(1.5*pow(qz/q, 2)-0.5))*x;
-    return -GM*x/(r*r*r);
-    //return -x;
+Particle particle;
+
+double calc(double x, double y, double z) {
+    double r = hypot(hypot(x, y), z);
+    double accelaration = (-GM/(r*r*r) + 3*GM*r*r/(r*r*r)*J2*(1.5*pow(particle.qz/r, 2)-0.5))*x;
+//    double accelaration = -GM*x/(r*r*r);
+    return accelaration;
 }
 
 void symp2(Particle* pa, double t) {
-    pa->px+=calc(pa->qx, pa->qy) *0.5*t;
-    pa->py+=calc(pa->qy, pa->qx) *0.5*t;
+    pa->px+=calc(pa->qx, pa->qy, pa->qz) *0.5*t;
+    pa->py+=calc(pa->qy, pa->qz, pa->qx) *0.5*t;
+    pa->pz+=calc(pa->qz, pa->qx, pa->qy) *0.5*t;
 
     pa->qx+=pa->px/M*t;
     pa->qy+=pa->py/M*t;
+    pa->qz+=pa->pz/M*t;
 
-    pa->px+=calc(pa->qx, pa->qy) *0.5*t;
-    pa->py+=calc(pa->qy, pa->qx) *0.5*t;
+    pa->px+=calc(pa->qx, pa->qy, pa->qz) *0.5*t;
+    pa->py+=calc(pa->qy, pa->qz, pa->qx) *0.5*t;
+    pa->pz+=calc(pa->qz, pa->qx, pa->qy) *0.5*t;
 }
 
 double calcE(Particle pa) {
-    double q = hypot(pa.qx, pa.qy);
-    double p = hypot(pa.px, pa.py);
-    double K = 0.5/M*pow(q, 2);
+    double q = hypot(hypot(pa.qx, pa.qy), pa.qz);
+    double p = hypot(hypot(pa.px, pa.py), pa.pz);
+    double K = 0.5/M*pow(p, 2);
     double U = - GM*M/q;
     return K + U;
 }
 
 double a_length(Particle pa) {
-    double q = hypot(pa.qx, pa.qy);
-    double p = hypot(pa.px, pa.py);
+    double q = hypot(hypot(pa.qx, pa.qy), pa.qz);
+    double p = hypot(hypot(pa.px, pa.py), pa.pz);
     return q*GM/(2*GM-pow(p, 2)*q);
 }
 
 int main() {
-    Particle particle;
     std::ofstream ofs;
     ofs.open( "kep" );
-    for (int i=0;i<10000000;i++) {
-            double x = particle.qx;
-            double y = particle.qy;
+    for (int i=0;i<1000000;i++) {
             for (int s=0;s<sympI;s++) {
                 symp2(&particle, dT*symp[s]);
                 //std::cout << symp[s] << std::endl;
@@ -82,7 +85,7 @@ int main() {
             //        std::cout << "qx = " << particle.qx << ", px = " << particle.px << std::endl;
 
         if (i%500==0) {
-            ofs << particle.qx << " " << particle.qy << " " << 0.0 << " " << calcE(particle) << " " << a_length(particle) << std::endl;
+            ofs << particle.qx << " " << particle.qy << " " << particle.qz << " " << calcE(particle) << " " << a_length(particle) << std::endl;
         }
      }
     ofs.close();
