@@ -1,19 +1,19 @@
 #include "satellite.hpp"
 
 const double Satellite::GM = 4*M_PI*M_PI;
-const double Satellite::M = 4*M_PI;
+const double Satellite::M = 1;
 const double Satellite::totalE = 1.0;
 const double Satellite::J2 = 1082.264E-6;
 const double Satellite::eq_radius = 63;
 
 Satellite::Satellite() {
-    qx = 1.2;
+    qx = 1.8;
     qy = 0.0;
     qz = 0.0;
 
     px = 0.0;
 //    py = 0.0;
-    py = 1.3*sqrt(2*GM);
+    py = 0.6*sqrt(2*GM);
     pz = 0.0;
 
     //dT = 0.00001;
@@ -35,7 +35,7 @@ double Satellite::RungeKuttaDP(double lq) {
 
     double theta = atan2(qy, hypot(qx, qz));
     double momemtum = (-GM*lq*qi3 + 3*GM*q*q*qi4*J2*(1.5*pow(qz/q, 2)-0.5))*dT;
-    //double momemtum = -GM*lq*qi3*dT;
+//    double momemtum = -GM*lq*qi3*dT;
     return momemtum;
 //    return -lq*dT;
 }
