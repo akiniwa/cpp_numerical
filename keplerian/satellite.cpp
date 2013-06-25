@@ -28,11 +28,14 @@ double Satellite::RungeKuttaDP(double lq) {
     q   = hypot(hypot( qx, qy ), qz);
     qi3 = 1.0/(q*q*q);
 
+<<<<<<< HEAD
     theta += 0.01;
     //double momemtum = -GM*M*lq*qi3*dT + 0.1*sin(theta);
 <<<<<<< HEAD
     double momemtum = -GM*M*lq*qi3*dT;
 =======
+=======
+>>>>>>> ellipse/ellipse
     double momemtum = -GM*lq*qi3*dT;
 >>>>>>> origin/master
     return momemtum;

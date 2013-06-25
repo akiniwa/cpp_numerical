@@ -12,11 +12,15 @@ Satellite::Satellite() {
     qz = 0.0;
 
     px = 0.0;
+<<<<<<< HEAD
 //    py = 0.0;
     py = 0.6*sqrt(2*GM);
+=======
+    py = 2.29*sqrt(2*GM);
+>>>>>>> ellipse/ellipse
     pz = 0.0;
 
-    //dT = 0.00001;
+    accelaration = 0.0;
     dT = 0.00001;
 }
 
@@ -33,9 +37,15 @@ double Satellite::RungeKuttaDP(double lq) {
     qi3 = 1.0/(q*q*q);
     qi4 = qi3 / q;
 
+<<<<<<< HEAD
     double theta = atan2(qy, hypot(qx, qz));
     double momemtum = (-GM*lq*qi3 + 3*GM*q*q*qi4*J2*(1.5*pow(qz/q, 2)-0.5))*dT;
 //    double momemtum = -GM*lq*qi3*dT;
+=======
+    accelaration = (-GM*lq*qi3 + 3*GM*q*q*qi4*J2*(1.5*pow(qz/q, 2)-0.5));
+    //accelaration = -GM*lq*qi3;
+    double momemtum = accelaration*dT;
+>>>>>>> ellipse/ellipse
     return momemtum;
 //    return -lq*dT;
 }

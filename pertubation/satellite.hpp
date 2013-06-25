@@ -17,6 +17,7 @@ class Satellite : public Particle {
         Satellite();
         void COEs(double, double, double);
         double getCoordinate(int);
+        double accelaration;
         enum XYZ {
             X, 
             Y,
