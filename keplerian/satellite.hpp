@@ -2,7 +2,6 @@
 
 class Satellite : public Particle {
    private:
-        static const double M;
         double RungeKuttaDQ(double);
         double RungeKuttaDP(double);
         double rotate(int);
@@ -11,6 +10,7 @@ class Satellite : public Particle {
         double omegaSmall;
         double theta;
     public:
+        static const double M;
         static const double GM;
         static const double totalE;
         Satellite();

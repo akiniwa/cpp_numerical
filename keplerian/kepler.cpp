@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     debris->COEs(M_PI*0.4,M_PI*0.3, M_PI*.025);
     bool rotate = true;
 
-    for(int t=0; t<1000000; t++){
+    for(int t=0; t<10000000; t++){
         debris->motion();
         double r = hypot(hypot(debris->qx, debris->qy), debris->qz);
         double p = hypot(hypot(debris->px, debris->py), debris->pz);
@@ -52,12 +52,12 @@ int main(int argc, char *argv[])
         double q = hypot(debris->qz , debris->qx);
         double theta = atan2(debris->qy, q) * 180.0 / M_PI;
 
-        if (t%20==0) {
+        if (t%5000==0) {
             fprintf(fp, "%f %f %f\n", debris->getCoordinate(Satellite::X),debris->getCoordinate(Satellite::Y), debris->getCoordinate(Satellite::Z));
             if (rotate==true) {
-                fprintf(fp2, "%f %f %f\n", theta, p, 0.5*pow(p, 2) - debris->GM/r);
+                fprintf(fp2, "%f %f %f\n", theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r);
             } else {
-                fprintf(fp2, "%f %f %f\n", 180-theta, p, 0.5*pow(p, 2) - debris->GM/r);
+                fprintf(fp2, "%f %f %f\n", 180-theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r);
             }
         }
     }

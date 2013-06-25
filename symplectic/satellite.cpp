@@ -1,7 +1,7 @@
 #include "satellite.hpp"
 
 const double Satellite::GM = 4*M_PI*M_PI;
-const double Satellite::M = 4*M_PI;
+const double Satellite::M = 1.0;
 const double Satellite::totalE = 1.0;
 const double Satellite::J2 = 1082.264E-6;
 const double Satellite::eq_radius = 63;
@@ -12,7 +12,7 @@ Satellite::Satellite() {
     qz = 0.0;
 
     px = 0.0;
-    py = 1.2*sqrt(2*GM);
+    py = 0.5*sqrt(2*GM);
     pz = 0.0;
 
     accelaration = 0.0;
