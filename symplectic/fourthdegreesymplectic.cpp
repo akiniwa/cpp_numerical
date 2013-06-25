@@ -3,7 +3,7 @@
 #include <fstream>
 
 const double GM = 4*M_PI*M_PI;
-const double M = 1;
+const double M = 2;
 const double dT = 0.0001;
 const int sympI = 3;
 const double J2 = 1082.264E-6;
@@ -32,8 +32,8 @@ Particle particle;
 
 double calc(double x, double y, double z) {
     double r = hypot(hypot(x, y), z);
-    double accelaration = (-GM/(r*r*r) + 3*GM*r*r/(r*r*r)*J2*(1.5*pow(particle.qz/r, 2)-0.5))*x;
-//    double accelaration = -GM*x/(r*r*r);
+//  double accelaration = (-GM/(r*r*r) + 3*GM*r*r/(r*r*r)*J2*(1.5*pow(particle.qz/r, 2)-0.5))*x;
+    double accelaration = -GM*x/(r*r*r);
     return accelaration;
 }
 
@@ -64,6 +64,12 @@ double a_length(Particle pa) {
     double p = hypot(hypot(pa.px, pa.py), pa.pz);
     return q*GM/(2*GM-pow(p, 2)*q);
 }
+
+/*
+double h_moment() {
+    double lxy = 1/M
+}
+*/
 
 int main() {
     std::ofstream ofs;
