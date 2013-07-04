@@ -131,7 +131,7 @@ int main() {
             double I = I_anomaly(h);
             double OMEGA = OMEGA_anomaly(I, h);
             
-    //        fprintf(f, "%f, %f, %f, %f\n", particle.qx, particle.qy, particle.qz, calcE(particle));
+    //        fprintf(f, "%f %f %f %f\n", particle.qx, particle.qy, particle.qz, calcE(particle));
             ofs << particle.qx << " " << particle.qy << " " << particle.qz << " " << calcE(particle) << " " << a << " " << h << " " << e << " " << I << " " << OMEGA << std::endl;
         }
          for (int s=0;s<sympI;s++) {

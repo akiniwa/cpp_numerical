@@ -2,31 +2,42 @@
 #include <math.h>
 #include <time.h>
 
-#define N 6
-#define M 1
-#define G 1
-#define J2 1082.264E-6
-//#define J2 0.5
-#define aE 1
-
 void runge(double t,double y[],double step);
 double f(double t,double y[],int i);
 
-int main () 
-{
+double L = 6.3781E6;
+double G = 6.6743E-11;
+double M = 5.9722E24;
+int T = 24*3600;
+int N = 6;
+const double J2 = 1082.264E-6;
+//double J2 = 1.081E-6;
+
+int main () {
     clock_t start, end;
     start = clock();
 
 	double t,y[6],dt,tmax;
+
+    double geo_radius = pow(G*M*pow((T/(2*M_PI)), 2), 1/3.0);
+    double geo_velocity = geo_radius*2*M_PI/T;
 	
-	/*   y[0]=x, y[1]=y, y[2]=z, y[3]=vx, y[4]=vy, y[5]=vz	*/
+    /*   y[0]=x, y[1]=y, y[2]=z, y[3]=vx, y[4]=vy, y[5]=vz */
+    double qx, qy, qz, px, py, pz;
 	
-	y[0]=1.0;	//x座標
-	y[1]=0.1;	//y座標
-	y[2]=1.0;	//z座標
-	y[3]=0.1;	//速度vのx方向
-	y[4]=1.0;	//速度vのy方向
-	y[5]=0.1;	//速度vのz方向
+    qx = geo_radius;
+    qy = 0.0;
+    qz = 0.0;
+    px = 0.0;
+    py = geo_velocity;
+    pz = 0.0;
+
+	y[0]=qx/L;  //x座標
+	y[1]=qy/L;  //y座標
+	y[2]=qz/L;  //z座標
+	y[3]=px/pow(M*G/L, 0.5);    //速度vのx方向
+	y[4]=py/pow(M*G/L, 0.5);    //速度vのy方向
+	y[5]=pz/pow(M*G/L, 0.5);    //速度vのz方向
 	dt=0.001;
 	tmax=1000.0;
 	
@@ -64,15 +75,15 @@ int main ()
 		/*------------エネルギー計算 ここから------------*/
 		double KE = (0.5*y[3]*y[3]+ 0.5*y[4]*y[4]+ 0.5*y[5]*y[5]);					//運動エネルギー
 //		double PE = -G*M/r;															//ポテンシャルエネルギー（摂動なし）
-   //     double R = 0.0;
-		double R = -G*M*pow(aE,2)*J2/pow(r,3)*(1.5*pow(y[2]/r,2)-0.5);				//J2項による摂動関数 R
-		double PE = -G*M/r+R;														//ポテンシャルエネルギー（摂動あり）
+ //     double R = 0.0;
+		//double R = -G*M*pow(aE,2)*J2/pow(r,3)*(1.5*pow(y[2]/r,2)-0.5);				//J2項による摂動関数 R
+		double PE = -G*M/r;														//ポテンシャルエネルギー（摂動あり）
 		/*------------エネルギー計算 ここまで------------*/
 //		printf("t=%f KE+PE=%f KE=%f PE=%f a=%f e=%f h=%f I= %f lxy=%f　lyz=%f lzx=%f\n",t,KE+PE,KE,PE,a,e,h,I,lxy,lyz,lzx);	//各値をprintfでチェック
 		
         if (count%500==0) {
 //            fprintf(output0,"%f %f\n",t,KE+PE);
-            fprintf(output1,"%.50f, %.50f, %.50f, %.50f\n",y[0],y[1],y[2], KE+PE);
+            fprintf(output1,"%.5f %.5f %.5f %.5f\n",y[0],y[1],y[2], KE+PE);
  //          fprintf(output2,"%f %f\n",t,I);
  //           fprintf(output3,"%f %f\n",t,a);
         }
@@ -111,11 +122,11 @@ void runge(double t,double y[],double step)
 double f(double t,double y[], int i)
 {
 	double r = sqrt(pow(y[0], 2)+ pow(y[1], 2)+ pow(y[2], 2));							//rの距離
-	double RXBIBUN = -G*M*pow(aE,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[0]/r;	//Rのxによる微分項
-	double RYBIBUN = -G*M*pow(aE,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[1]/r;	//Rのyによる微分項
-	double RZBIBUN = -G*M*pow(aE,2)*J2*(
+	double RXBIBUN = -pow(L,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[0]/r;	//Rのxによる微分項
+	double RYBIBUN = -pow(L,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[1]/r;	//Rのyによる微分項
+	double RZBIBUN = -pow(L,2)*J2*(
 					3*y[2]/pow(r,5)-7.5*pow(y[2],3)/pow(r,7)+
-										1.5*y[2]/pow(r,5));
+									1.5*y[2]/pow(r,5));
     //Rのzによる微分項
 	
 	if (i == 0) {
@@ -125,14 +136,14 @@ double f(double t,double y[], int i)
 	} else if (i == 2) {
 		return (y[5]);
 	} else if (i == 3) {
-//     	return (-G*M*y[0]/pow(r,3));			//摂動なしケプラー運動
-		return (-G*M*y[0]/pow(r,3)-RXBIBUN);	//J2あり
+     	//return (-y[0]/pow(r,3));			//摂動なしケプラー運動
+		return (-y[0]/pow(r,3)-RXBIBUN);	//J2あり
 	} else if (i == 4) {
-//		return (-G*M*y[1]/pow(r,3));			//摂動なしケプラー運動
-		return (-G*M*y[1]/pow(r,3)-RYBIBUN);	//J2あり
+//		return (-y[1]/pow(r,3));			//摂動なしケプラー運動
+		return (-y[1]/pow(r,3)-RYBIBUN);	//J2あり
 	} else if (i == 5) {
-//		return (-G*M*y[2]/pow(r,3));			//摂動なしケプラー運動
-		return (-G*M*y[2]/pow(r,3)-RZBIBUN);	//J2あり
+//		return (-y[2]/pow(r,3));			//摂動なしケプラー運動
+		return (-y[2]/pow(r,3)-RZBIBUN);	//J2あり
 	} else {
 		printf("unexpected error \n");
 		return 0;
