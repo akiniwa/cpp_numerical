@@ -6,14 +6,18 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
 
 int width = 1000, height = 1000;
 
 float yi[1000002];  /* 軌跡データ格納用 */
 float xi[1000002];
 float zi[1000002];
+int count = 0;
 int i=0, j=0;
 FILE *fp3;
+std::ofstream fout;
 
 GLfloat light0pos[] = { 1.0, 1.0, 3.0, 1.0 };
 GLfloat light1pos[] = { 2.0, 6.0, 0.0, 1.0 };
@@ -110,12 +114,42 @@ void FreeFall(void){
         //_glDisable(GL_DEPTH_TEST);
 }
 
+void SaveImage_PPM(const std::string& fname) { // save current screen buffe image to the ppm file
+    int viewport[4];
+    ::glGetIntegerv( GL_VIEWPORT, viewport);   // get location and size of viewport
+    const unsigned int width = viewport[2];   // viewport width
+    const unsigned int height = viewport[3];  //  viewport height
+    void* image = malloc(3*width* height);  // allocate buffer (rgb)*width*height
+    ::glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    ::glReadPixels(0, 0, width,height, GL_RGB, GL_UNSIGNED_BYTE, image);   // get image
+    // write to file
+    fout.open(fname.c_str(),std::ios::out);
+    fout << "P3\n";   // ascii format
+    fout << width << " " << height << "\n";
+    fout << "255\n";  // range of the rgb data
+    char* img = (char*)image;  
+    for(unsigned int ih=0;ih<height;ih++){    
+        for(unsigned int iw=0;iw<width;iw++){    
+            unsigned int i = (height-1-ih)*width+iw;
+            int r = (unsigned char)img[i*3+0];
+            int g = (unsigned char)img[i*3+1];
+            int b = (unsigned char)img[i*3+2];
+            fout << r << " " << g << " " << b << "\n";
+        }
+    }
+    fout.close();
+}
+
 void display(void){
 		glClearColor( .0, .0, .0, .0);
 		glClear( GL_COLOR_BUFFER_BIT );
 //		glRotated(0.3, 0.8, 1.0, 0.6);
-	//	glRotated(0.5, 0.1, 1.0, 0.1);
+//      glRotated(0.5, 0.1, 1.0, 0.1);
 		FreeFall();
+        char str[13];
+        sprintf(str, "out%.4d.ppm", count);
+        SaveImage_PPM(str);
+        count++;
 		glutSwapBuffers();
 }
 
@@ -205,7 +239,7 @@ void openGL(const char* file) {
         //gluPerspective(30.0, (double)width / (double)height, 1.0, 5.0);
 //		glOrtho(-2.0, 2.0, -2.0, 2.0, -8.0, 8.0);
 		//glTranslated(0.0, 0.0, -10.0);
-		glTranslated(0, 0, -30.0);
+		glTranslated(0, 0, -10.0);
 
 //		gluOrtho2D( -1.7, 1.7, -1.7, 1.7 );
 		glEnable(GL_LIGHTING);
@@ -223,5 +257,7 @@ void openGL(const char* file) {
 		glLightfv(GL_LIGHT3, GL_DIFFUSE, green);
         glutKeyboardFunc(keyboard);
 
+        glRotated(5*25, 1.0, 0.0, 0.0);
+        glRotated(5*3, 0.0, -1.0, 3.0);
 		glutMainLoop();
 }

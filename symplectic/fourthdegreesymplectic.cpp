@@ -4,7 +4,7 @@
 
 //const double GM = 4*M_PI*M_PI;
 const double G = 4*M_PI*M_PI;
-const double M = 2;
+const double M = 1;
 const double m = 1;
 const double dT = 0.0001;
 const int sympI = 3;
@@ -24,13 +24,13 @@ struct Particle {
     double px, py, pz;
     double qx, qy, qz;
     Particle() {
-        px = 0.0;
+        px = 0.1;
         py = 0.6*sqrt(2*G*M);
-        pz = 0.0;
+        pz = 0.1;
         
         qx = aE;
-        qy = 0.0;
-        qz = 0.0;
+        qy = 0.3;
+        qz = 0.2;
     }
 };
 
@@ -79,16 +79,29 @@ double calcE(Particle pa) {
     double q = hypot(hypot(pa.qx, pa.qy), pa.qz);
     double p = hypot(hypot(pa.px, pa.py), pa.pz);
     double K = 0.5/m*pow(p, 2);
-  double U = - G*M*m/q;
-//    double U = - G*M*m*(1.0/q + J2*pow(aE, 2)/pow(q, 3)*(1.5*pow((pa.qz/q), 2) - 0.5));
+    double U = - G*M*m/q;
+//  double U = - G*M*m*(1.0/q + J2*pow(aE, 2)/pow(q, 3)*(1.5*pow((pa.qz/q), 2) - 0.5));
     return K + U;
 }
 
-/*
-double h_moment() {
-    double lxy = 1/M
+double h_moment(Particle pa) {
+    double lxy = 1/M * ((pa.qx * pa.py) - (pa.qy * pa.px));
+    double lyz = 1/M * ((pa.qy * pa.pz) - (pa.qz * pa.py)); 
+    double lzx = 1/M * ((pa.qz * pa.px) - (pa.qx * pa.pz));
+    return hypot(hypot(lxy, lyz), lzx);
 }
-*/
+
+double e_anomaly(double a, double h) {
+    return pow((1 - h*h/(G*M*a)), 0.5);
+}
+
+double I_anomaly(double h) {
+    return acos(1/h);
+}
+
+double OMEGA_anomaly(double I, double h) {
+    return asin(1/(sin(I)*h));
+}
 
 int main() {
     std::ofstream ofs;
@@ -100,7 +113,12 @@ int main() {
         }
         if (i%500==0) {
             // ファイルに出力
-            ofs << particle.qx << " " << particle.qy << " " << particle.qz << " " << calcE(particle) << " " << a_length(particle) << std::endl;
+            double a = a_length(particle);
+            double h = h_moment(particle);
+            double e = e_anomaly(a, h);
+            double I = I_anomaly(h);
+            double OMEGA = OMEGA_anomaly(I, h);
+            ofs << particle.qx << " " << particle.qy << " " << particle.qz << " " << calcE(particle) << " " << a << " " << h << " " << e << " " << I << " " << OMEGA << std::endl;
         }
      }
     ofs.close();

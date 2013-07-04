@@ -1,0 +1,6 @@
+d <- read.table("test1.txt", header=T)
+attach(d)
+plot(x, type="l")
+plot(y, type="l")
+plot(z, type="l")
+plot(Energy, type="l")
