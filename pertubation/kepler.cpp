@@ -62,8 +62,18 @@ int main(int argc, char *argv[])
             //if (abs(theta) > 89.0) {
             //rotate = !rotate;
             //}
+<<<<<<< HEAD
+
+            if (rotate==true) {
+                fprintf(fp2, "%f %f %f %f\n", theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r, r*debris->GM/(2*debris->GM-pow(p, 2)*r));
+//                fprintf(fp2, "%f %f %f %f\n", theta, p, 0.5*pow(p, 2)+ 0.5*pow(r, 2));
+            } else {
+                fprintf(fp2, "%f %f %f %f\n", 180-theta, p, 0.5*pow(p, 2)/debris->M - debris->GM/r, r*debris->GM/(2*debris->GM-pow(p, 2)*r));
+//                fprintf(fp2, "%f %f %f %f\n", 180-theta, p, 0.5*pow(p, 2)+ 0.5*pow(r, 2));
+=======
             if (previous>359.0 && theta<1.0) {
                 count++;
+>>>>>>> ellipse/ellipse
             }
             fprintf(fp2, "%f %f %f %f\n", theta+count*360, p, 0.5*pow(p, 2)/debris->M - debris->GM/r, debris->accelaration);
             previous = theta;

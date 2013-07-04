@@ -9,7 +9,8 @@ class Particle {
         double qxk[4], qyk[4], qzk[4], pxk[4], pyk[4], pzk[4];
         void RungeKutta(double, double, double, double,double, double );
         virtual double RungeKuttaDQ(double) = 0;
-        virtual double RungeKuttaDP(double) = 0;
+        virtual double RungeKuttaDP(double, double , double) = 0;
+        virtual double RungeKuttaDPZ(double, double, double) = 0;
      public:
         Particle();
         double qx;

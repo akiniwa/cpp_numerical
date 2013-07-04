@@ -1,84 +1,55 @@
 #include "satellite.hpp"
 
-const double Satellite::GM = 4*M_PI*M_PI;
-const double Satellite::M = 4*M_PI;
+//const double Satellite::GM = 4*M_PI*M_PI;
+const double Satellite::GM = 1.0;
+const double Satellite::M = 1.0;
 const double Satellite::totalE = 1.0;
 const double Satellite::J2 = 1082.264E-6;
-const double Satellite::eq_radius = 63;
+const double aE = 1.0;
 
 Satellite::Satellite() {
-    qx = 1.6;
-    qy = 0.0;
-    qz = 0.0;
+    qx = 0.1;
+    qy = 0.1;
+    qz = 1.0;
 
-    px = 0.0;
-    py = 1.2*sqrt(2*GM);
-    pz = 0.0;
+    px = 1.0;
+    py = 0.5;
+    pz = 0.1;
 
     accelaration = 0.0;
     dT = 0.001;
 }
 
 double Satellite::RungeKuttaDQ(double lp) {
-    double coordinate = lp/M*dT;
+    double coordinate = lp*dT;
     return coordinate;
 }
 
-double Satellite::RungeKuttaDP(double lq) {
-    double q, qi3, qi4;
-
-    q   = hypot(hypot( qx, qy ), qz);
-    qi3 = 1.0/(q*q*q);
-    qi4 = qi3 / q;
-
-    accelaration = (-GM*qi3 + 3*GM*q*q*qi4*J2*30*(1.5*pow(qz/q, 2)-0.5))*lq;
-    //accelaration = -GM*lq*qi3;
+double Satellite::RungeKuttaDP(double lqx, double lqy, double lqz) {
+    double r   = hypot(hypot( lqx, lqy ), lqz);
+    accelaration = GM*(-1/(pow(r, 3)) - 7.5*pow(aE, 2)*pow(lqz, 2)*J2/(pow(r, 7)) + 1.5*J2*pow(aE, 2)/pow(r, 5))*lqx;
+    //accelaration = -GM*lqx/pow(r, 3);
     double momemtum = accelaration*dT;
     return momemtum;
-//    return -lq*dT;
 }
 
-double Satellite::rotate(int axis) {
-    double l_qx, l_qy, l_qz;
-    double i_qx, i_qy, i_qz;
-    /* rotate Omega */
-    /*
-    l_qx = (cos(omega)*qx - sin(omega)*qy);
-    l_qy = (sin(omega)*qx + cos(omega)*qy);
-    l_qz = pz;
-    */
-    i_qx = qx;
-    i_qy = qy;
-    i_qz = qz;
-    /* rotate inclination */
-    /*
-    i_qx = l_qx;
-    i_qy = (cos(inclination)*l_qy - sin(inclination)*l_qz);
-    i_qz = (sin(inclination)*l_qy + cos(inclination)*l_qz);
-    */
-    /* rotate omegaSmall */
-    switch (axis) {
-        case X:
-            return i_qx;
-            break;
-        case Y:
-            return i_qy;
-            break;
-        case Z:
-            return i_qz;
-            break;
-        default:
-            return 0;
-            break;
-    }
+double Satellite::RungeKuttaDPZ(double lqx, double lqy, double lqz) {
+    double r   = hypot(hypot( lqx, lqy ), lqz);
+    accelaration = GM*(-1*lqx/(pow(r, 3)) + J2*pow(aE, 2)*(3*lqx/(pow(r, 5)) - 7.5*pow(lqx, 3)/pow(r, 7) + 1.5*lqx/pow(r, 5)));
+    //accelaration = -GM*lqx/pow(r, 3);
+    double momemtum = accelaration*dT;
+    return momemtum;
 }
 
-void Satellite::COEs(double O, double i, double o) {
-    omega = O;
-    inclination = i;
-    omegaSmall = o;
+double Satellite::getKineticE() {
+    double p = hypot(hypot(px, py), pz);
+    return 0.5*pow(p, 2);
 }
 
-double Satellite::getCoordinate(int axis) {
-    return rotate(axis);
+double Satellite::getPotentialE() {
+    double q = hypot(hypot(qx, qy), qz);
+    double R = -GM*pow(aE,2)*J2/pow(q,3)*(1.5*pow(qz/q,2)-0.5);
+    // double R = 0;
+
+    return -GM*M/q + R;
 }

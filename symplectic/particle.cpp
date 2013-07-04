@@ -18,9 +18,9 @@ void Particle::RungeKutta( double qx, double qy, double qz, double px, double py
     qyk[rungeIndex] = RungeKuttaDQ(py); 
     qzk[rungeIndex] = RungeKuttaDQ(pz);
 
-    pxk[rungeIndex] = RungeKuttaDP(qx);
-    pyk[rungeIndex] = RungeKuttaDP(qy);
-    pzk[rungeIndex] = RungeKuttaDP(qz);
+    pxk[rungeIndex] = RungeKuttaDP(qx, qy, qz);
+    pyk[rungeIndex] = RungeKuttaDP(qy, qx, qz);
+    pzk[rungeIndex] = RungeKuttaDPZ(qz, qx, qy);
 }
 
 void Particle::motion() {

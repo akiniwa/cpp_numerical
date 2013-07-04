@@ -1,0 +1,4 @@
+#!/bin/bash
+mogrify -format jpeg *.ppm
+ffmpeg -i "out%4d.jpeg" -vcodec mjpeg out.avi
+ffmpeg -i out.avi -b 900 -ab 96 sample.mpeg
