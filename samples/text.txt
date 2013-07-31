@@ -1,8 +1,0 @@
-
-#include <stdlib.h>
-physical review E 78
-partial segregation
-
-ridge reduce dimention
-
-rizard pitch

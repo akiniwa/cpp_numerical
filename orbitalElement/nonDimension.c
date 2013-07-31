@@ -39,7 +39,7 @@ int main () {
 	y[4]=py/pow(M*G/L, 0.5);    //速度vのy方向
 	y[5]=pz/pow(M*G/L, 0.5);    //速度vのz方向
 	dt=0.001;
-	tmax=1000.0;
+	tmax=130.0;
 	
 	FILE *output0,*output1,*output2,*output3;
 	
@@ -121,29 +121,29 @@ void runge(double t,double y[],double step)
 
 double f(double t,double y[], int i)
 {
-	double r = sqrt(pow(y[0], 2)+ pow(y[1], 2)+ pow(y[2], 2));							//rの距離
-	double RXBIBUN = -pow(L,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[0]/r;	//Rのxによる微分項
-	double RYBIBUN = -pow(L,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[1]/r;	//Rのyによる微分項
-	double RZBIBUN = -pow(L,2)*J2*(
+    double r = sqrt(pow(y[0], 2)+ pow(y[1], 2)+ pow(y[2], 2));                      //rの距離
+    double RXBIBUN = -pow(L,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[0]/r;	//Rのxによる微分項
+    double RYBIBUN = -pow(L,2)*J2*(-7.5*pow(y[2],2)/pow(r,6)+1.5/pow(r,4))*y[1]/r;	//Rのyによる微分項
+    double RZBIBUN = -pow(L,2)*J2*(
 					3*y[2]/pow(r,5)-7.5*pow(y[2],3)/pow(r,7)+
 									1.5*y[2]/pow(r,5));
     //Rのzによる微分項
 	
-	if (i == 0) {
-		return(y[3]);
-	} else if (i == 1) {
-		return (y[4]);
-	} else if (i == 2) {
-		return (y[5]);
+    if (i == 0) {
+        return(y[3]);
+    } else if (i == 1) {
+        return (y[4]);
+    } else if (i == 2) {
+        return (y[5]);
 	} else if (i == 3) {
-     	//return (-y[0]/pow(r,3));			//摂動なしケプラー運動
-		return (-y[0]/pow(r,3)-RXBIBUN);	//J2あり
+     	return (-y[0]/pow(r,3));			//摂動なしケプラー運動
+      return (-y[0]/pow(r,3)-RXBIBUN);	//J2あり
 	} else if (i == 4) {
-//		return (-y[1]/pow(r,3));			//摂動なしケプラー運動
-		return (-y[1]/pow(r,3)-RYBIBUN);	//J2あり
+		return (-y[1]/pow(r,3));			//摂動なしケプラー運動
+//		return (-y[1]/pow(r,3)-RYBIBUN);	//J2あり
 	} else if (i == 5) {
-//		return (-y[2]/pow(r,3));			//摂動なしケプラー運動
-		return (-y[2]/pow(r,3)-RZBIBUN);	//J2あり
+		return (-y[2]/pow(r,3));			//摂動なしケプラー運動
+//		return (-y[2]/pow(r,3)-RZBIBUN);	//J2あり
 	} else {
 		printf("unexpected error \n");
 		return 0;
@@ -158,4 +158,4 @@ double f(double t,double y[], int i)
  else if (i == 1){return (-y[0]);}
  else {printf("unexpected error \n");return 0;}
  }
- */
+*/
