@@ -55,6 +55,8 @@ int main(int argc, char *argv[])
     end = clock();
     printf("%.10lf[s]\n", (double)(end - start)/CLOCKS_PER_SEC);
 
+    /*
     glutInit(&argc, argv);
     openGL(argv[1]);
+    */
 }
