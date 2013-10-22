@@ -146,9 +146,9 @@ void display(void){
 //		glRotated(0.3, 0.8, 1.0, 0.6);
 //      glRotated(0.5, 0.1, 1.0, 0.1);
 		FreeFall();
-        char str[13];
-        sprintf(str, "out%.4d.ppm", count);
-        SaveImage_PPM(str);
+        //char str[13];
+        //sprintf(str, "out%.4d.ppm", count);
+        //SaveImage_PPM(str);
         count++;
 		glutSwapBuffers();
 }
@@ -239,7 +239,7 @@ void openGL(const char* file) {
         //gluPerspective(30.0, (double)width / (double)height, 1.0, 5.0);
 //		glOrtho(-2.0, 2.0, -2.0, 2.0, -8.0, 8.0);
 		//glTranslated(0.0, 0.0, -10.0);
-		glTranslated(0, 0, -10.0);
+		glTranslated(0, 0, -20.0);
 
 //		gluOrtho2D( -1.7, 1.7, -1.7, 1.7 );
 		glEnable(GL_LIGHTING);
@@ -250,14 +250,13 @@ void openGL(const char* file) {
 		glEnable(GL_LIGHT3);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//		glRotated(70, 0, 1.0, 0);
 
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, green);
 		glLightfv(GL_LIGHT2, GL_DIFFUSE, green);
 		glLightfv(GL_LIGHT3, GL_DIFFUSE, green);
         glutKeyboardFunc(keyboard);
 
-        glRotated(5*25, 1.0, 0.0, 0.0);
-        glRotated(5*3, 0.0, -1.0, 3.0);
+//        glRotated(5*25, 1.0, 0.0, 0.0);
+//        glRotated(5*3, 0.0, -1.0, 3.0);
 		glutMainLoop();
 }

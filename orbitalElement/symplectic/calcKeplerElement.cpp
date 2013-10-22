@@ -10,9 +10,9 @@ double calcE(double q, double p) {
     return K + U;
 }
 
-double calcE_J2(double q, double p) {
+double calcE_J2(double q, double p, Particle pa) {
     double K = 0.5*pow(p, 2);
-    double U = -1.0/q - J2/pow(q, 3)*(1.5*pow((particle.qz/q), 2) - 0.5);
+    double U = -1.0/q - J2/pow(q, 3)*(1.5*pow((pa.qz/q), 2) - 0.5);
     return K + U;
 }
 
@@ -27,32 +27,32 @@ double e_anomaly(double a, double h) {
     return pow((1 - h*h/(G*M*a)), 0.5);
 }
 
-double I_anomaly(double h) {
-    double lxy = 1/M * ((particle.qx * particle.py) - (particle.qy * particle.px));
+double I_anomaly(double h, Particle pa) {
+    double lxy = 1/M * ((pa.qx * pa.py) - (pa.qy * pa.px));
     return acos(lxy/h);
 }
 
-double OMEGA_anomaly(double I, double h) {
-    double lxy = 1/M * ((particle.qx * particle.py) - (particle.qy * particle.px));
+double OMEGA_anomaly(double I, double h, Particle pa) {
+    double lxy = 1/M * ((pa.qx * pa.py) - (pa.qy * pa.px));
     return asin(lxy/(sin(I)*h));
 }
 
-void reportElement_toFile(FILE* f,FILE* reso, bool J2, double theta) {
-    double q = hypot(hypot(particle.qx, particle.qy), particle.qz);
-    double p = hypot(hypot(particle.px, particle.py), particle.pz);
+void reportElement_toFile(FILE* f,FILE* reso, bool J2, double theta, Particle pa) {
+    double q = hypot(hypot(pa.qx, pa.qy), pa.qz);
+    double p = hypot(hypot(pa.px, pa.py), pa.pz);
 
     double a = a_length(q, p);
     double Energy = 0;
     if (J2) {
-        Energy = calcE_J2(q, p);
+        Energy = calcE_J2(q, p, pa);
     } else {
         Energy = calcE(q, p);
     }
-    double h = h_moment(particle);
+    double h = h_moment(pa);
     double e = e_anomaly(a, h);
-    double I = I_anomaly(h);
-    double OMEGA = OMEGA_anomaly(I, h);
+    double I = I_anomaly(h, pa);
+    double OMEGA = OMEGA_anomaly(I, h, pa);
 
-    fprintf(f, "%.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f\n", particle.qx, particle.qy, particle.qz, Energy, a, h, e, I, theta);
-    fprintf(reso, "%f %f\n", a*(particle.qx/q*cos(theta)+particle.qy/q*sin(theta)), a*(particle.qy/q*cos(theta)-particle.qx/q*sin(theta))); 
+    fprintf(f, "%.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f\n", pa.qx, pa.qy, pa.qz, Energy, a, h, e, I, theta);
+    fprintf(reso, "%f %f\n", a*(pa.qx/q*cos(theta)+pa.qy/q*sin(theta)), a*(pa.qy/q*cos(theta)-pa.qx/q*sin(theta))); 
 }

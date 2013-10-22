@@ -1,4 +1,3 @@
-
 double calc(double x, double y, double z) {
     double r = hypot(hypot(x, y), z);
     double accelaration = (-1/pow(r, 3))*x;
@@ -46,5 +45,3 @@ void symp2_for_J2(Particle* pa, double t) {
     pa->py+=calcXY_J2(pa->qy, pa->qx, pa->qz) *0.5*t;
     pa->pz+=calcZ_J2(pa->qz, pa->qx, pa->qy) *0.5*t;
 }
-
-
