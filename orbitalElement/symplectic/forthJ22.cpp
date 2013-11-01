@@ -16,6 +16,9 @@ const double dT = 0.001;
 const int sympI = 3;
 const double J2 = 1082.264E-6;
 
+const double S22 = 0.0;
+const double C22 = 0.0;
+
 const double geo_radius = pow(G*M*pow((earthT/(2*M_PI)), 2), 1/3.0);
 const double geo_velocity = geo_radius*2*M_PI/earthT;
 
